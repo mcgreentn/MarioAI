@@ -1,6 +1,7 @@
 package ch.idsia.mario.engine.level;
 
 import java.io.*;
+import java.util.Random;
 
 
 public class Level
@@ -52,6 +53,99 @@ public class Level
         data = new byte[width][height];
         spriteTemplates = new SpriteTemplate[width][height];
         observation = new byte[width][height];
+    }
+    
+    private static int[] getCorrectIndex(String[] lines, int x, int y) {
+	int[][] table = new int[][] {
+	    new int[] {}, 
+	    new int[] {}, 
+	    new int[] {},
+	    new int[] {},
+	    new int[] {},
+	    new int[] {2, 0},
+	    new int[] {0, 0},
+	    new int[] {1, 0},
+	    new int[] {},
+	    new int[] {2, 2},
+	    new int[] {0, 2},
+	    new int[] {1, 2},
+	    new int[] {},
+	    new int[] {2, 1},
+	    new int[] {0, 1},
+	    new int[] {1, 1}
+	    };
+	int index = 0;
+	if(x == 0 || lines[y].charAt(x - 1) == 'X') {
+	    index += 1;
+	}
+	if(x == lines[y].length() - 1 || lines[y].charAt(x + 1) == 'X') {
+	    index += 2;
+	}
+	if(y == lines.length - 1 || lines[y + 1].charAt(x) == 'X') {
+	    index += 4;
+	}
+	if(y == 0 || lines[y - 1].charAt(x) == 'X') {
+	    index += 8;
+	}
+	
+	return table[index];
+    }
+    
+    private static boolean isGrounded(String[] lines, int x, int y) {
+	if(y == 0) {
+	    return true;
+	}
+	Character c = lines[y-1].charAt(x);
+	return !(c == 'X' || c == 'S'|| c == '?' || c =='?' || c == 'Q' || c == '<' || c == '>' || c == '[' || c == ']');
+    }
+    
+    public static Level initializeLevel(Random rnd, String level) {
+	String[] lines = level.split("\n");
+	Level lvl = new Level(lines[0].length(), lines.length);
+	for(int y=0; y<lines.length; y++) {
+	    for(int x=0; x<lines[y].length(); x++) {
+		Character c = lines[y].charAt(x);
+		switch(c) {
+		case 'E':
+		    lvl.setSpriteTemplate(x, y, new SpriteTemplate(rnd.nextInt(4), !isGrounded(lines, x, y)));
+		    break;
+		case 'X':
+		    int[] indeces = getCorrectIndex(lines, x, y);
+		    if(indeces.length == 2) {
+			lvl.setBlock(x, y, (byte)(4 + indeces[0] + (8 + indeces[1]) * 16));
+		    }
+		    else {
+			lvl.setBlock(x, y, (byte)(9));
+		    }
+		    break;
+		case '?':
+		    lvl.setBlock(x, y, (byte)(20 + rnd.nextInt(4)));
+		    break;
+		case 'Q':
+		    lvl.setBlock(x, y, (byte)(4 + rnd.nextInt(4)));
+		    break;
+		case 'S':
+		    lvl.setBlock(x, y, (byte)(16 + rnd.nextInt(4)));
+		    break;
+		case 'o':
+		    lvl.setBlock(x, y, (byte)(32));
+		    break;
+		case '<':
+		    lvl.setBlock(x, y, (byte)(10));
+		    break;
+		case '>':
+		    lvl.setBlock(x, y, (byte)(11));
+		    break;
+		case '[':
+		    lvl.setBlock(x, y, (byte)(10 + 16));
+		    break;
+		case ']':
+		    lvl.setBlock(x, y, (byte)(11 + 16));
+		    break;
+		}
+	    }
+	}
+	return lvl;
     }
 
 //    public void ASCIIToOutputStream(OutputStream os) throws IOException {
