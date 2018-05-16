@@ -96,7 +96,26 @@ public class Level
 	    return true;
 	}
 	Character c = lines[y-1].charAt(x);
-	return !(c == 'X' || c == 'S'|| c == '?' || c =='?' || c == 'Q' || c == '<' || c == '>' || c == '[' || c == ']');
+	return !(c == 'X' || c == 'S'|| c == '?' || c == 'Q' || c == '<' || c == '>' || c == '[' || c == ']');
+    }
+    
+    private static int findFirstFloor(String[] lines, int x) {
+	boolean groundFound = false;
+	for(int i=lines.length - 1; i>= 0; i++) {
+	    Character c = lines[i].charAt(x);
+	    if(!groundFound) {
+		if(c == '-') {
+		    return i;
+		}
+	    }
+	    else {
+		if(c == 'X' || c == 'S'|| c == '?' || c == 'Q' || c == '<' || c == '>' || c == '[' || c == ']') {
+		    groundFound = true;
+		}
+	    }
+	}
+	
+	return -1;
     }
     
     public static Level initializeLevel(Random rnd, String level) {
@@ -145,6 +164,8 @@ public class Level
 		}
 	    }
 	}
+	lvl.xExit = lines[0].length() - 1;
+	lvl.yExit = findFirstFloor(lines, lvl.xExit);
 	return lvl;
     }
 
