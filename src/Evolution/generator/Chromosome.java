@@ -1,4 +1,6 @@
-package generator;
+package Evolution.generator;
+
+import ch.idsia.scenarios.RunGivenLevel;
 
 import java.util.Random;
 
@@ -94,7 +96,11 @@ public class Chromosome implements Comparable<Chromosome> {
 	    }
 	}
 	this._constraints = 1 - ((double)mistakes) / total;
-	this._fitness = this._rnd.nextDouble();
+
+//	this._fitness = this._rnd.nextDouble();
+		RunGivenLevel rgl = new RunGivenLevel(_rnd);
+		rgl.setLevel(this.toString());
+		rgl.runLevel(null);
     }
     
     public Chromosome clone(){

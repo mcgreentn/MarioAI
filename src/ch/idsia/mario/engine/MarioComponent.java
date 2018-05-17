@@ -7,6 +7,7 @@ import ch.idsia.mario.environments.Environment;
 import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.GameViewer;
 import ch.idsia.tools.tcp.ServerAgent;
+import ch.idsia.mario.engine.level.Level;
 
 import javax.swing.*;
 import java.awt.*;
@@ -274,6 +275,12 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
         levelScene = ((LevelScene) scene);
         scene.init();
+    }
+
+    public void startLevel(long seed, int difficulty, int type, int levelLength, int timeLimit, Level level) {
+        scene = new LevelScene(graphicsConfiguration, this, seed, difficulty, type, levelLength, timeLimit);
+        levelScene = ((LevelScene) scene);
+        ((LevelScene)scene).init(level);
     }
 
     public void levelFailed() {

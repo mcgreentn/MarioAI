@@ -66,7 +66,12 @@ public class SimulationOptions extends ParameterContainer
     public void setLevelType(int levelType) {
         setParameterValue("-lt", s(levelType));    }
 
+    public Boolean getCustomLevel() {
+        return b(getParameterValue("-cl")); }
 
+    public void setCustomLevel(boolean isCustom) {
+        setParameterValue("-cl", s(isCustom));
+    }
     // LevelDifficulty
     public int getLevelDifficulty() {
         return i(getParameterValue("-ld"));                           }

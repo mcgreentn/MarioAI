@@ -6,6 +6,8 @@ import ch.idsia.mario.engine.MarioComponent;
 import ch.idsia.mario.engine.sprites.Mario;
 import ch.idsia.tools.EvaluationInfo;
 
+import ch.idsia.mario.engine.level.Level;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Sergey Karakovskiy
@@ -48,6 +50,24 @@ public class BasicSimulator implements Simulation
         marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
                                  , simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
                                   simulationOptions.getTimeLimit());
+        marioComponent.setPaused(simulationOptions.isPauseWorld());
+        marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());
+        marioComponent.setZLevelScene(simulationOptions.getZLevelMap());
+        marioComponent.setMarioInvulnerable(simulationOptions.isMarioInvulnerable());
+        return marioComponent.run1(simulationOptions.currentTrial++,
+                simulationOptions.getNumberOfTrials()
+        );
+    }
+
+    public EvaluationInfo simulateOneLevel(Level level)
+    {
+        Mario.resetStatic(simulationOptions.getMarioMode());
+        prepareMarioComponent();
+        marioComponent.setZLevelScene(simulationOptions.getZLevelMap());
+        marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());
+        marioComponent.startLevel(simulationOptions.getLevelRandSeed(), simulationOptions.getLevelDifficulty()
+                , simulationOptions.getLevelType(), simulationOptions.getLevelLength(),
+                simulationOptions.getTimeLimit(), level);
         marioComponent.setPaused(simulationOptions.isPauseWorld());
         marioComponent.setZLevelEnemies(simulationOptions.getZLevelEnemies());
         marioComponent.setZLevelScene(simulationOptions.getZLevelMap());
