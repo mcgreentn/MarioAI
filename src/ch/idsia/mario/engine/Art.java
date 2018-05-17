@@ -38,7 +38,7 @@ public class Art
     {
         try
         {
-//            System.out.println("Image Directory: " + img);
+            System.out.println("Image Directory: " + img);
 //            System.out.println(curDir);
             mario = cutImage(gc, "mariosheet.png", 32, 32);
             smallMario = cutImage(gc, "smallmariosheet.png", 16, 16);
