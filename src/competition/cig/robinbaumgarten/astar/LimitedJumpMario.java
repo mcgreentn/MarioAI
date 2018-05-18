@@ -156,11 +156,11 @@ public class LimitedJumpMario
    
     public boolean canJumpHigher(SearchNode currentPos, boolean checkParent)
     {
-    	if (currentPos.parentPos != null && checkParent
-    			&& canJumpHigher(currentPos.parentPos, false))
-    			return true;
+//    	if (currentPos.parentPos != null && checkParent && canJumpHigher(currentPos.parentPos, false))
+//    			return true;
         return currentPos.sceneSnapshot.mario.mayJump() && (currentPos.sceneSnapshot.mario.jumpTime == 0);
     	//return currentPos.sceneSnapshot.mario.mayJump() || (currentPos.sceneSnapshot.mario.jumpTime > 0);
+//		return false;
     }
     
     private ArrayList<boolean[]> createPossibleActions(SearchNode currentPos)

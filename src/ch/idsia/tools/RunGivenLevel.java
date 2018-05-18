@@ -1,4 +1,4 @@
-package ch.idsia.scenarios;
+package ch.idsia.tools;
 
 import Evolution.generator.Chromosome;
 import ch.idsia.ai.agents.Agent;
@@ -6,6 +6,7 @@ import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.mario.simulation.BasicSimulator;
 import ch.idsia.mario.simulation.Simulation;
 import ch.idsia.tools.EvaluationInfo;
+import ch.idsia.tools.ToolsConfigurator;
 import competition.cig.robinbaumgarten.AStarAgent;
 import competition.cig.robinbaumgarten.LimitedJumpAgent;
 import ch.idsia.tools.CmdLineOptions;
@@ -28,14 +29,14 @@ public class RunGivenLevel {
     public RunGivenLevel(Random rnd) {
        this.rnd = rnd;
     }
-    public static void main(String[] args) {
-
-        CmdLineOptions options = new CmdLineOptions(args);
-
-        // construct and set up agents
-        RunGivenLevel eL = new RunGivenLevel(new Random());
-
-    }
+//    public static void main(String[] args) {
+//
+//        CmdLineOptions options = new CmdLineOptions(args);
+//
+//        // construct and set up agents
+//        RunGivenLevel eL = new RunGivenLevel(new Random());
+//
+//    }
 
     public void agentSetup() {
         perfect = new AStarAgent();
@@ -45,15 +46,15 @@ public class RunGivenLevel {
     public void setLevel(String chromosome) {
         level = chromosome;
     }
-    public void runLevel(CmdLineOptions options) {
+    public double runLevel(CmdLineOptions options) {
 //        System.out.println(level);
         Level lvl = Level.initializeLevel(rnd, level);
 
 
         this.agentSetup();
-        this.optionSetup(options);
+        options = optionSetup(options);
 
-        this.runLevel(options);
+//        this.runLevel(options);
 //        Task task = new ProgressTask(options);
 
 //        double[] perf = task.evaluate(perfect);
@@ -62,29 +63,45 @@ public class RunGivenLevel {
         // perfect first
         options.setAgent(perfect);
 
+
         Simulation simulator = new BasicSimulator(options.getSimulationOptionsCopy());
         EvaluationInfo perf;
         perf = ((BasicSimulator)simulator).simulateOneLevel(lvl);
 
+        options.setAgent(disabled);
+        simulator = new BasicSimulator(options.getSimulationOptionsCopy());
+        EvaluationInfo disa;
+        disa = ((BasicSimulator)simulator).simulateOneLevel(lvl);
+
+       double perfectPerformance =  perf.computeDistancePassed();
+       double disabledPerformance = disa.computeDistancePassed();
+
+       double result = (perfectPerformance - disabledPerformance) / options.getLevelLength();
+       System.out.println(result);
+       return result;
 //        System.out.println(perf);
 //        System.out.println(disa);
 
     }
 
-    public void optionSetup(CmdLineOptions options) {
+    public CmdLineOptions optionSetup(CmdLineOptions options) {
 
         if(options == null) {
 
 
             options = new CmdLineOptions(new String[0]);
             // basic options stuff
-            options.setMaxFPS(false);
+//            options.setMaxFPS(false);
             options.setVisualization(true);
             options.setNumberOfTrials(1);
-            options.setMatlabFileName("");
-            options.setLevelLength(28);
+            options.setMaxFPS(true);
+            ToolsConfigurator.CreateMarioComponentFrame(
+                    options);
+
+            options.setTimeLimit(10);
         }
         // flag that this is going to work differently. We are going to insert our own level here
 //        options.setCustomLevel(true);
+        return options;
     }
 }

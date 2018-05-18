@@ -9,7 +9,7 @@ import competition.cig.robinbaumgarten.astar.sprites.Mario;
 public class LimitedJumpAgent implements Agent
 {
     protected boolean action[] = new boolean[Environment.numberOfButtons];
-    protected String name = "RobinBaumgarten_AStarAgent";
+    protected String name = "LimitedJump_Agent";
     private LimitedJumpMario sim;
     private int tickCounter = 0;
     private float lastX = 0;

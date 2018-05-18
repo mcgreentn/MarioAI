@@ -101,7 +101,7 @@ public class Level
     
     private static int findFirstFloor(String[] lines, int x) {
 	boolean groundFound = false;
-	for(int i=lines.length - 1; i>= 0; i++) {
+	for(int i=lines.length - 1; i>= 0; i--) {
 	    Character c = lines[i].charAt(x);
 	    if(!groundFound) {
 		if(c == '-') {
@@ -164,8 +164,11 @@ public class Level
 		}
 	    }
 	}
-	lvl.xExit = lines[0].length() - 1;
+	lvl.xExit = lines[0].length() -1;
 	lvl.yExit = findFirstFloor(lines, lvl.xExit);
+	if(lvl.yExit == -1){
+	    lvl.yExit = rnd.nextInt(lines.length);
+    }
 	return lvl;
     }
 
