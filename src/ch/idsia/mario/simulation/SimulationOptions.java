@@ -133,7 +133,7 @@ public class SimulationOptions extends ParameterContainer
         return i(getParameterValue("-mm"));
     }
 
-    private void setMarioMode(int marioMode) {
+    public void setMarioMode(int marioMode) {
         setParameterValue("-mm", s(marioMode));
     }
 

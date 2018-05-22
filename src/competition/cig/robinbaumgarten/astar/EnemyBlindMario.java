@@ -242,8 +242,10 @@ public class EnemyBlindMario
     		//System.out.println("Gap height: "+levelScene.level.gapHeight[(int) (levelScene.mario.x/16)]);
     		levelScene.mario.damage+=5;
     	}
-    	return levelScene.mario.damage;
+//    	return levelScene.mario.damage;
+		return 0;
     }
+
     
 
     
@@ -421,8 +423,8 @@ public class EnemyBlindMario
     				+ (current.hasBeenHurt ? "-" : "") + "]");
     		if (current.hasBeenHurt)
     		{
-    			//requireReplanning = true;    			
-                        requireReplanning = false;
+    			requireReplanning = true;
+//                        requireReplanning = false;
     		}
     		if (current.parentPos != null)
     			current.parentPos.chosenChild =current;
@@ -494,11 +496,11 @@ public class EnemyBlindMario
 	{
     	if (levelScene.setLevelScene(levelPart))
     	{
-    		//requireReplanning = true;
-                requireReplanning = false;
+    		requireReplanning = true;
+//                requireReplanning = false;
     	}
     	//requireReplanning = levelScene.setEnemies(enemies);
-        requireReplanning = false;
+//        requireReplanning = false;
 	}
 	
 	public LevelScene backupState()

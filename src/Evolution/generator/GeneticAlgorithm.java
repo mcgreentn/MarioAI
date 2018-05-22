@@ -12,15 +12,15 @@ public class GeneticAlgorithm {
     private int _elitism;
     private int _selectionMethod;
     private Random _rnd;
-    private LevelSlicesLibrary _lib;
+    private SlicesLibrary _lib;
     
-    public GeneticAlgorithm(LevelSlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
-	    double mutation, int elitism) {
+    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
+							double mutation, int elitism) {
 	this(lib, populationSize, chromosomeLength, crossover, mutation, elitism, 0);
     }
 
-    public GeneticAlgorithm(LevelSlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
-	    double mutation, int elitism, int selectionMethod) {
+    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
+							double mutation, int elitism, int selectionMethod) {
 	this._lib = lib;
 	this._populationSize = populationSize;
 	this._chromosomeLength = chromosomeLength;
@@ -76,6 +76,47 @@ public class GeneticAlgorithm {
 	return new Chromosome[][] {feasible.toArray(new Chromosome[0]), infeasible.toArray(new Chromosome[0]) };
     }
 
+
+    public double averageFitness(Chromosome[] pop) {
+    	double fitAvg = 0;
+		for (Chromosome c : pop) {
+			fitAvg += c.getFitness();
+		}
+
+		return fitAvg / pop.length;
+	}
+
+	public double averageConstraint(Chromosome[] pop) {
+		double constAvg = 0;
+		for (Chromosome c : pop) {
+			constAvg += c.getConstraints();
+		}
+		return constAvg / pop.length;
+	}
+
+	public int getMaxFitnessIndex(Chromosome[] pop) {
+		double max = -100;
+		int maxIndex = -1;
+    	for (int i = 0; i < pop.length; i++) {
+			double fit = pop[i].getFitness();
+			if(fit > max) {
+				max = fit;
+				maxIndex = i;
+			}
+		}
+		return maxIndex;
+	}
+
+	public double getMaxFitness(Chromosome[] pop) {
+		double max = -100;
+		for (Chromosome c : pop) {
+			double fit = c.getFitness();
+			if(fit > max) {
+				max = fit;
+			}
+		}
+		return max;
+	}
     private void calculateFitness(Chromosome[] pop) {
 	for (Chromosome c : pop) {
 	    c.calculateFitness();

@@ -3,13 +3,11 @@ import java.io.File;
 import java.io.FileFilter;
 import java.nio.file.Files;
 
-import Evolution.generator.Chromosome;
-import Evolution.generator.GeneticAlgorithm;
-import Evolution.generator.LevelSlicesLibrary;
+import Evolution.generator.*;
 
 public class TestGenerator {
     public static void main(String[] args){
-		LevelSlicesLibrary library = new LevelSlicesLibrary();
+		SlicesLibrary library = new RepeatedLevelSlicesLibrary();
 
 		File directory = new File("levels/");
 		File[] files = directory.listFiles(new FileFilter() {

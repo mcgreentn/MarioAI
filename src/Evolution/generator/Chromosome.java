@@ -1,5 +1,6 @@
 package Evolution.generator;
 
+import ch.idsia.tools.AgentResultObject;
 import ch.idsia.tools.RunGivenLevel;
 
 import java.util.Random;
@@ -7,12 +8,12 @@ import java.util.Random;
 public class Chromosome implements Comparable<Chromosome> {
     private Random _rnd;
     private int[] _section;
-    private LevelSlicesLibrary _lib;
+    private SlicesLibrary _lib;
     private double _constraints;
     private double _fitness;
     private boolean _fitnessCalculated;
     
-    public Chromosome(Random rnd, LevelSlicesLibrary lib, int size){
+    public Chromosome(Random rnd, SlicesLibrary lib, int size){
 	this._section = new int[size];
 	this._rnd = rnd;
 	this._lib = lib;
@@ -95,14 +96,40 @@ public class Chromosome implements Comparable<Chromosome> {
 		}
 	    }
 	}
-	this._constraints = 1 - ((double)mistakes) / total;
+	this._constraints = 1;
+	if(total != 0) {
+		this._constraints = 1 - ((double) mistakes) / total;
+	}
 
 //	this._fitness = this._rnd.nextDouble();
-		RunGivenLevel rgl = new RunGivenLevel(_rnd);
-		rgl.setLevel(this.toString());
-		this._fitness = rgl.runLevel(null);
+		if(this._constraints == 1.0) {
+			RunGivenLevel rgl = new RunGivenLevel(_rnd);
+			rgl.setLevel(this.toString());
+			AgentResultObject aro = rgl.runLevel(null);
+			if(aro.firstAgentResult == 1 && aro.secondAgentResult == 0) {
+				this._fitness = 1 - getNormalizedTileUse();
+			} else {
+				this._fitness = aro.score;
+			}
+		} else {
+			this._fitness = 0;
+		}
     }
-    
+
+
+    public double getNormalizedTileUse() {
+    	double result;
+
+    	String mapString = this.toString();
+    	int count = 0;
+		for (char c : mapString.toCharArray()) {
+			if(c != '-') {
+				count++;
+			}
+		}
+		result = count / (mapString.toCharArray().length * 1.0);
+		return result;
+	}
     public Chromosome clone(){
 	Chromosome clone = new Chromosome(this._rnd, this._lib, this._section.length);
 	for(int i=0; i<_section.length; i++){

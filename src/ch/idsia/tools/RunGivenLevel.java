@@ -9,6 +9,8 @@ import ch.idsia.tools.EvaluationInfo;
 import ch.idsia.tools.ToolsConfigurator;
 import competition.cig.robinbaumgarten.AStarAgent;
 import competition.cig.robinbaumgarten.LimitedJumpAgent;
+import competition.cig.robinbaumgarten.EnemyBlindAgent;
+import competition.cig.robinbaumgarten.NoBButtonAgent;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.mario.engine.level.Level;
 import java.util.Random;
@@ -38,22 +40,23 @@ public class RunGivenLevel {
 //
 //    }
 
-    public void agentSetup() {
-        perfect = new AStarAgent();
-        disabled = new LimitedJumpAgent();
+    public void agentSetup(Agent perfect, Agent disabled) {
+        this.perfect = perfect;
+        this.disabled = disabled;
     }
 
     public void setLevel(String chromosome) {
         level = chromosome;
     }
-    public double runLevel(CmdLineOptions options) {
+    public AgentResultObject runLevel(CmdLineOptions options) {
 //        System.out.println(level);
         Level lvl = Level.initializeLevel(rnd, level);
 
 
-        this.agentSetup();
         options = optionSetup(options);
-
+        agentSetup(new AStarAgent(), new LimitedJumpAgent());
+//        agentSetup(new AStarAgent(), new EnemyBlindAgent());
+//        agentSetup(new AStarAgent(), new NoBButtonAgent());
 //        this.runLevel(options);
 //        Task task = new ProgressTask(options);
 
@@ -78,7 +81,12 @@ public class RunGivenLevel {
 
        double result = (perfectPerformance - disabledPerformance) / options.getLevelLength();
        System.out.println(result);
-       return result;
+
+       int perfStatus = perf.marioStatus;
+       int disaStatus = disa.marioStatus;
+       AgentResultObject aro = new AgentResultObject(perfStatus, disaStatus, result);
+
+       return aro;
 //        System.out.println(perf);
 //        System.out.println(disa);
 
@@ -92,12 +100,12 @@ public class RunGivenLevel {
             options = new CmdLineOptions(new String[0]);
             // basic options stuff
 //            options.setMaxFPS(false);
-            options.setVisualization(true);
+            options.setVisualization(false);
             options.setNumberOfTrials(1);
             options.setMaxFPS(true);
             ToolsConfigurator.CreateMarioComponentFrame(
                     options);
-
+            options.setMarioMode(1);
             options.setTimeLimit(10);
         }
         // flag that this is going to work differently. We are going to insert our own level here

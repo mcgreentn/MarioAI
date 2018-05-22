@@ -3,7 +3,9 @@ package ch.idsia.scenarios;
 import ch.idsia.ai.agents.Agent;
 import ch.idsia.ai.agents.AgentsPool;
 import ch.idsia.ai.agents.human.HumanKeyboardAgent;
-import competition.cig.mechanicextractor.AStarAgent;
+//import competition.cig.mechanicextractor.AStarAgent;
+//import competition.cig.robinbaumgarten.AStarAgent;
+import competition.cig.robinbaumgarten.EnemyBlindAgent;
 import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.ai.tasks.Task;
 import ch.idsia.tools.CmdLineOptions;
@@ -18,7 +20,7 @@ import ch.idsia.tools.EvaluationOptions;
 public class Play {
 
     public static void main(String[] args) {
-        Agent controller = new AStarAgent();
+        Agent controller = new EnemyBlindAgent();
         if (args.length > 0) {
             controller = AgentsPool.load (args[0]);
             AgentsPool.addAgent(controller);
