@@ -106,11 +106,11 @@ public class Chromosome implements Comparable<Chromosome> {
 			RunGivenLevel rgl = new RunGivenLevel(_rnd);
 			rgl.setLevel(this.toString());
 			AgentResultObject aro = rgl.runLevel(null);
-			if(aro.firstAgentResult == 1 && aro.secondAgentResult == 0) {
+//			if(aro.firstAgentResult == 1 && aro.secondAgentResult == 0) {
 				this._fitness = 1 - getNormalizedTileUse();
-			} else {
-				this._fitness = aro.score;
-			}
+//			} else {
+//				this._fitness = aro.score;
+//			}
 		} else {
 			this._fitness = 0;
 		}

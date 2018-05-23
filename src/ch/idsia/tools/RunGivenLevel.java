@@ -105,7 +105,7 @@ public class RunGivenLevel {
             options.setMaxFPS(true);
             ToolsConfigurator.CreateMarioComponentFrame(
                     options);
-            options.setMarioMode(1);
+            options.setMarioMode(0);
             options.setTimeLimit(10);
         }
         // flag that this is going to work differently. We are going to insert our own level here
