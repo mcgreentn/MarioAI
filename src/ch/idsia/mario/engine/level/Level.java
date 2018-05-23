@@ -118,9 +118,9 @@ public class Level
 	return -1;
     }
     
-    public static Level initializeLevel(Random rnd, String level) {
+    public static Level initializeLevel(Random rnd, String level, int appendingSize) {
 	String[] lines = level.split("\n");
-	Level lvl = new Level(lines[0].length(), lines.length);
+	Level lvl = new Level(lines[0].length() + 6, lines.length);
 	for(int y=0; y<lines.length; y++) {
 	    for(int x=0; x<lines[y].length(); x++) {
 		Character c = lines[y].charAt(x);
@@ -164,7 +164,8 @@ public class Level
 		}
 	    }
 	}
-	lvl.xExit = lines[0].length() -1;
+	appendingSize = Math.max(1, appendingSize);
+	lvl.xExit = lines[0].length() - appendingSize;
 	lvl.yExit = findFirstFloor(lines, lvl.xExit);
 	if(lvl.yExit == -1){
 	    lvl.yExit = rnd.nextInt(lines.length);

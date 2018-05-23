@@ -8,13 +8,15 @@ import java.util.Random;
 public class Chromosome implements Comparable<Chromosome> {
     private Random _rnd;
     private int[] _section;
+    private int _appendingSize;
     private SlicesLibrary _lib;
     private double _constraints;
     private double _fitness;
     private boolean _fitnessCalculated;
     
-    public Chromosome(Random rnd, SlicesLibrary lib, int size){
+    public Chromosome(Random rnd, SlicesLibrary lib, int size, int appendingSize){
 	this._section = new int[size];
+	this._appendingSize = appendingSize;
 	this._rnd = rnd;
 	this._lib = lib;
 	this._fitness = 0;
@@ -104,7 +106,7 @@ public class Chromosome implements Comparable<Chromosome> {
 //	this._fitness = this._rnd.nextDouble();
 		if(this._constraints == 1.0) {
 			RunGivenLevel rgl = new RunGivenLevel(_rnd);
-			rgl.setLevel(this.toString());
+			rgl.setLevel(this.toString(), this._appendingSize);
 			AgentResultObject aro = rgl.runLevel(null);
 //			if(aro.firstAgentResult == 1 && aro.secondAgentResult == 0) {
 				this._fitness = 1 - getNormalizedTileUse();
@@ -131,7 +133,7 @@ public class Chromosome implements Comparable<Chromosome> {
 		return result;
 	}
     public Chromosome clone(){
-	Chromosome clone = new Chromosome(this._rnd, this._lib, this._section.length);
+	Chromosome clone = new Chromosome(this._rnd, this._lib, this._section.length, this._appendingSize);
 	for(int i=0; i<_section.length; i++){
 	    clone._section[i] = this._section[i];
 	}
@@ -167,11 +169,22 @@ public class Chromosome implements Comparable<Chromosome> {
 	String level = "";
 	int height = this._lib.getSlice(this._section[0]).length();
 	for(int i=0; i<height; i++){
+	    String appendingChar = "-";
+	    if(i == height - 1) {
+		appendingChar = "X";
+	    }
+	    for(int k=0; k<this._appendingSize; k++) {
+		level += appendingChar;
+	    }
 	    for(int j=0; j<this._section.length; j++){
 		level += this._lib.getSlice(this._section[j]).charAt(i);
 	    }
+	    for(int k=0; k<this._appendingSize; k++) {
+		level += appendingChar;
+	    }
 	    level += "\n";
 	}
+	
 	return level;
     }
 

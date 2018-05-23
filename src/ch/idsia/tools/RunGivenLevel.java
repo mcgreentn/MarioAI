@@ -25,6 +25,7 @@ public class RunGivenLevel {
     public Agent disabled;
 
     public String level;
+    public int appendingSize;
 
     public Random rnd;
 
@@ -45,12 +46,13 @@ public class RunGivenLevel {
         this.disabled = disabled;
     }
 
-    public void setLevel(String chromosome) {
-        level = chromosome;
+    public void setLevel(String chromosome, int appendingSize) {
+        this.level = chromosome;
+        this.appendingSize = appendingSize;
     }
     public AgentResultObject runLevel(CmdLineOptions options) {
 //        System.out.println(level);
-        Level lvl = Level.initializeLevel(rnd, level);
+        Level lvl = Level.initializeLevel(rnd, level, appendingSize);
 
 
         options = optionSetup(options);
