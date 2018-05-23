@@ -120,7 +120,15 @@ public class Level
     
     public static Level initializeLevel(Random rnd, String level) {
 	String[] lines = level.split("\n");
-	Level lvl = new Level(lines[0].length(), lines.length);
+	for(int i=0; i<lines.length; i++) {
+	    if(i == lines.length - 1) {
+		lines[i] = "XXX" + lines[i] + "XXX";
+	    }
+	    else {
+		lines[i] = "---" + lines[i] + "---";
+	    }
+	}
+	Level lvl = new Level(lines[0].length() + 6, lines.length);
 	for(int y=0; y<lines.length; y++) {
 	    for(int x=0; x<lines[y].length(); x++) {
 		Character c = lines[y].charAt(x);
@@ -164,8 +172,8 @@ public class Level
 		}
 	    }
 	}
-	lvl.xExit = lines[0].length() -1;
-	lvl.yExit = findFirstFloor(lines, lvl.xExit);
+	lvl.xExit = lines[0].length() - 3;
+	lvl.yExit = lines.length - 2;
 	if(lvl.yExit == -1){
 	    lvl.yExit = rnd.nextInt(lines.length);
     }
