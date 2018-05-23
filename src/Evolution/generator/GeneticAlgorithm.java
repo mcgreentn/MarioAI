@@ -7,6 +7,7 @@ import java.util.Random;
 public class GeneticAlgorithm {
     private int _populationSize;
     private int _chromosomeLength;
+    private int _appendingSize;
     private double _crossover;
     private double _mutation;
     private int _elitism;
@@ -14,16 +15,17 @@ public class GeneticAlgorithm {
     private Random _rnd;
     private SlicesLibrary _lib;
     
-    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
+    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, int appendingSize, double crossover,
 							double mutation, int elitism) {
-	this(lib, populationSize, chromosomeLength, crossover, mutation, elitism, 0);
+	this(lib, populationSize, chromosomeLength, appendingSize, crossover, mutation, elitism, 0);
     }
 
-    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, double crossover,
+    public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, int appendingSize, double crossover,
 							double mutation, int elitism, int selectionMethod) {
 	this._lib = lib;
 	this._populationSize = populationSize;
 	this._chromosomeLength = chromosomeLength;
+	this._appendingSize = appendingSize;
 	this._crossover = crossover;
 	this._mutation = mutation;
 	this._elitism = elitism;
@@ -126,7 +128,7 @@ public class GeneticAlgorithm {
     public Chromosome[] evolve(double time) {
 	Chromosome[] currentPopulation = new Chromosome[this._populationSize];
 	for (int i = 0; i < currentPopulation.length; i++) {
-	    currentPopulation[i] = new Chromosome(this._rnd, this._lib, this._chromosomeLength);
+	    currentPopulation[i] = new Chromosome(this._rnd, this._lib, this._chromosomeLength, this._appendingSize);
 	    currentPopulation[i].randomInitialize();
 	}
 	long startTime = System.currentTimeMillis();

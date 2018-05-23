@@ -60,7 +60,7 @@ public class EvolveALevel {
     }
 
     public void init() {
-        ga = new GeneticAlgorithm(library, 100, 12, 0.9, 0.3, 1);
+        ga = new GeneticAlgorithm(library, 100, 12, 3, 0.9, 0.3, 1);
     }
     public void evolve(int gen) {
 
