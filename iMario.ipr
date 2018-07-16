@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< Updated upstream
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
@@ -12,6 +13,9 @@
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
     </resourceExtensions>
+=======
+  <component name="CompilerConfiguration">
+>>>>>>> Stashed changes
     <wildcardResourcePatterns>
       <entry name="?*.lvl" />
       <entry name="?*.dat" />
@@ -28,6 +32,7 @@
     </wildcardResourcePatterns>
   </component>
   <component name="CopyrightManager" default="" />
+<<<<<<< Updated upstream
   <component name="CppTools.Loader" reportImplicitCastToBool="false" version="2" compilerSelect="AUTO" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
@@ -38,11 +43,17 @@
   </component>
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8" />
   <component name="IdProvider" IDEtalkID="9A003F3F2136E6D8F8E23D7D40E1C032" />
+=======
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+>>>>>>> Stashed changes
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
       <option name="myName" value="Project Default" />
     </profile>
     <version value="1.0" />
+<<<<<<< Updated upstream
   </component>
   <component name="JavacSettings">
     <option name="MAXIMUM_HEAP_SIZE" value="256" />
@@ -71,6 +82,8 @@
     <option name="GENERATE_NO_WARNINGS" value="false" />
     <option name="IS_EMACS_ERRORS_MODE" value="true" />
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+=======
+>>>>>>> Stashed changes
   </component>
   <component name="Palette2">
     <group name="Swing">
@@ -193,6 +206,7 @@
       </item>
     </group>
   </component>
+<<<<<<< Updated upstream
   <component name="ProjectDetails">
     <option name="projectName" value="iMario" />
   </component>
@@ -206,21 +220,10 @@
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" default="false" project-jdk-name="10" project-jdk-type="JavaSDK">
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+>>>>>>> Stashed changes
     <output url="file://$PROJECT_DIR$/out" />
-  </component>
-  <component name="ResourceManagerContainer">
-    <option name="myResourceBundles">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-  </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
@@ -244,5 +247,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
   </component>
+<<<<<<< Updated upstream
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
+=======
+>>>>>>> Stashed changes
 </project>

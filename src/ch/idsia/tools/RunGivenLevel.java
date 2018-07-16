@@ -14,6 +14,9 @@ import competition.cig.robinbaumgarten.NoBButtonAgent;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.mario.engine.level.Level;
 import java.util.Random;
+
+import ch.idsia.ai.agents.human.HumanKeyboardAgent;
+
 import ch.idsia.ai.tasks.ProgressTask;
 import ch.idsia.ai.tasks.Task;
 
@@ -56,9 +59,10 @@ public class RunGivenLevel {
 
 
         options = optionSetup(options);
-        agentSetup(new AStarAgent(), new LimitedJumpAgent());
+//        agentSetup(new AStarAgent(), new LimitedJumpAgent());
 //        agentSetup(new AStarAgent(), new EnemyBlindAgent());
 //        agentSetup(new AStarAgent(), new NoBButtonAgent());
+        agentSetup(new HumanKeyboardAgent(), new HumanKeyboardAgent());
 //        this.runLevel(options);
 //        Task task = new ProgressTask(options);
 
@@ -102,13 +106,14 @@ public class RunGivenLevel {
             options = new CmdLineOptions(new String[0]);
             // basic options stuff
 //            options.setMaxFPS(false);
-            options.setVisualization(false);
+            options.setVisualization(true);
             options.setNumberOfTrials(1);
-            options.setMaxFPS(true);
+            options.setMaxFPS(false);
             ToolsConfigurator.CreateMarioComponentFrame(
                     options);
             options.setMarioMode(0);
-            options.setTimeLimit(10);
+            options.setTimeLimit(100);
+
         }
         // flag that this is going to work differently. We are going to insert our own level here
 //        options.setCustomLevel(true);

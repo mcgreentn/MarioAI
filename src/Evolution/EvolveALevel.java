@@ -14,9 +14,13 @@ public class EvolveALevel {
 
 //    Agent perfect;
 //    Agent disabled;
+//    String popFolder = "LJ/";
+//    String popFolder = "EB/";
+//    String popFolder = "NR/";
 
-    String popFolder = "populations/";
-
+//    String popFolder = "LJC/";
+//    String popFolder = "EBC/";
+    String popFolder = "NRC/";
     GeneticAlgorithm ga;
 
 //    public void init() {
@@ -43,9 +47,9 @@ public class EvolveALevel {
         catch (Exception e) {
             e.printStackTrace();
         }
-        long startTime = System.currentTimeMillis();
-        long time = 1000*60*60;
-        int count = 0;
+//        long startTime = System.currentTimeMillis();
+//        long time = 1000*60*60;
+//        int count = 0;
         eal.init();
 
         // time based
@@ -54,37 +58,20 @@ public class EvolveALevel {
 //            count++;
 //        }
         // gen based
-        for(int i = 0; i < 50; i++) {
-            eal.evolve(i+1);
-        }
+        eal.evolve();
     }
 
     public void init() {
-        ga = new GeneticAlgorithm(library, 100, 12, 3, 0.9, 0.3, 1);
+        ga = new GeneticAlgorithm(library, 100, 18, 0, 0.9, 0.3, 1);
     }
-    public void evolve(int gen) {
+    public void evolve() {
 
         try {
+            this.ga.initFileSystem(popFolder);
 //            this.ga = new GeneticAlgorithm(library, 100, 18, 0.9, 0.3, 1);
-            Chromosome[] pop = this.ga.evolve(1000);
-
-            File popFile = new File(popFolder + "/" + gen + ".txt");
-            FileWriter fWriter = new FileWriter(popFile, true);
-            PrintWriter pWriter = new PrintWriter(fWriter);
+            Chromosome[] pop = this.ga.evolve(120);
 
 
-            for (int i = 0; i < pop.length; i++) {
-                System.out.println("index " + i + " constraints " + pop[i].getConstraints() + " fitness " + pop[i].getFitness());
-                System.out.println(pop[i]);
-
-                pWriter.println("Max Fitness Index: " + ga.getMaxFitnessIndex(pop) + ", " + ga.getMaxFitness(pop));
-                pWriter.println("Average Constraint: " + ga.averageConstraint(pop));
-                pWriter.println("AverageFitness: " + ga.averageFitness(pop));
-                pWriter.println("index " + i + " constraints " + pop[i].getConstraints() + " fitness " + pop[i].getFitness());
-                pWriter.println(pop[i]);
-                pWriter.println(" ");
-            }
-            pWriter.close();
 
         } catch (Exception e) {
             e.printStackTrace();
