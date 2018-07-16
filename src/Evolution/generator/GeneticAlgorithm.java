@@ -1,5 +1,8 @@
 package Evolution.generator;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -14,7 +17,8 @@ public class GeneticAlgorithm {
     private int _selectionMethod;
     private Random _rnd;
     private SlicesLibrary _lib;
-    
+    private String popFolder;
+
     public GeneticAlgorithm(SlicesLibrary lib, int populationSize, int chromosomeLength, int appendingSize, double crossover,
 							double mutation, int elitism) {
 	this(lib, populationSize, chromosomeLength, appendingSize, crossover, mutation, elitism, 0);
@@ -30,7 +34,11 @@ public class GeneticAlgorithm {
 	this._mutation = mutation;
 	this._elitism = elitism;
 	this._selectionMethod = selectionMethod;
-	this._rnd = new Random();
+	this._rnd = new Random(100);
+    }
+
+    public void initFileSystem(String f) {
+        popFolder = f;
     }
     
     private Chromosome tournmentSelection(Chromosome[] pop){
@@ -101,7 +109,8 @@ public class GeneticAlgorithm {
 		int maxIndex = -1;
     	for (int i = 0; i < pop.length; i++) {
 			double fit = pop[i].getFitness();
-			if(fit > max) {
+			double constraint = pop[i].getConstraints();
+			if(constraint == 1 && fit > max) {
 				max = fit;
 				maxIndex = i;
 			}
@@ -113,7 +122,9 @@ public class GeneticAlgorithm {
 		double max = -100;
 		for (Chromosome c : pop) {
 			double fit = c.getFitness();
-			if(fit > max) {
+            double constraint = c.getConstraints();
+
+            if(constraint == 1 && fit > max) {
 				max = fit;
 			}
 		}
@@ -133,8 +144,36 @@ public class GeneticAlgorithm {
 	}
 	long startTime = System.currentTimeMillis();
 	Chromosome[] newPopulation = new Chromosome[currentPopulation.length];
+
+	int count = 0;
 	while (System.currentTimeMillis() - startTime < time) {
 	    this.calculateFitness(currentPopulation);
+
+
+        try {
+            File popFile = new File(popFolder + "/" + (count + 1) + ".txt");
+            FileWriter fWriter = new FileWriter(popFile, true);
+            PrintWriter pWriter = new PrintWriter(fWriter);
+
+            pWriter.println("Max Fitness Index: " + getMaxFitnessIndex(currentPopulation) + ", " + getMaxFitness(currentPopulation));
+            pWriter.println("Average Constraint: " + averageConstraint(currentPopulation));
+            pWriter.println("AverageFitness: " + averageFitness(currentPopulation));
+
+
+            for (int k = 0; k < currentPopulation.length; k++) {
+                System.out.println("index " + k + " constraints " + currentPopulation[k].getConstraints() + " fitness " + currentPopulation[k].getFitness());
+                System.out.println(currentPopulation[k]);
+
+                pWriter.println("index " + k + " constraints " + currentPopulation[k].getConstraints() + " fitness " + currentPopulation[k].getFitness());
+                pWriter.println(currentPopulation[k]);
+                pWriter.println(" ");
+
+            }
+            pWriter.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
 	    Chromosome[][] twoPop = this.getFeasibleInfeasible(currentPopulation);
 	    Arrays.sort(twoPop[0]);
 	    Arrays.sort(twoPop[1]);
@@ -169,8 +208,134 @@ public class GeneticAlgorithm {
 		}
 	    }
 	    currentPopulation = newPopulation;
+
+
+        count++;
 	}
 	this.calculateFitness(currentPopulation);
+
+        try {
+            File popFile = new File(popFolder + "/final.txt");
+            FileWriter fWriter = new FileWriter(popFile, true);
+            PrintWriter pWriter = new PrintWriter(fWriter);
+
+            pWriter.println("Max Fitness Index: " + getMaxFitnessIndex(currentPopulation) + ", " + getMaxFitness(currentPopulation));
+            pWriter.println("Average Constraint: " + averageConstraint(currentPopulation));
+            pWriter.println("AverageFitness: " + averageFitness(currentPopulation));
+
+
+            for (int i = 0; i < currentPopulation.length; i++) {
+                System.out.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                System.out.println(currentPopulation[i]);
+
+                pWriter.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                pWriter.println(currentPopulation[i]);
+                pWriter.println(" ");
+
+            }
+            pWriter.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 	return currentPopulation;
+    }
+
+    public Chromosome[] evolve(int generations) {
+        Chromosome[] currentPopulation = new Chromosome[this._populationSize];
+        for (int i = 0; i < currentPopulation.length; i++) {
+            currentPopulation[i] = new Chromosome(this._rnd, this._lib, this._chromosomeLength, this._appendingSize);
+            currentPopulation[i].randomInitialize();
+        }
+        long startTime = System.currentTimeMillis();
+        Chromosome[] newPopulation = new Chromosome[currentPopulation.length];
+
+        for(int j = 0; j < generations; j++) {
+            this.calculateFitness(currentPopulation);
+
+            try {
+                File popFile = new File(popFolder + "/" + (j + 1) + ".txt");
+                FileWriter fWriter = new FileWriter(popFile, true);
+                PrintWriter pWriter = new PrintWriter(fWriter);
+
+                pWriter.println("Max Fitness Index: " + getMaxFitnessIndex(currentPopulation) + ", " + getMaxFitness(currentPopulation));
+                pWriter.println("Average Constraint: " + averageConstraint(currentPopulation));
+                pWriter.println("AverageFitness: " + averageFitness(currentPopulation));
+
+
+                for (int i = 0; i < currentPopulation.length; i++) {
+                    System.out.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                    System.out.println(currentPopulation[i]);
+
+                    pWriter.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                    pWriter.println(currentPopulation[i]);
+                    pWriter.println(" ");
+
+                }
+                pWriter.close();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            Chromosome[][] twoPop = this.getFeasibleInfeasible(currentPopulation);
+            Arrays.sort(twoPop[0]);
+            Arrays.sort(twoPop[1]);
+            for (int i = 0; i < newPopulation.length - this._elitism; i++) {
+                Chromosome[] usedPopulation = twoPop[1];
+                if(this._rnd.nextDouble() < (double)(twoPop[0].length) / currentPopulation.length) {
+                    usedPopulation = twoPop[0];
+                }
+                Chromosome parent1 = this.rankSelection(usedPopulation);
+                if(this._selectionMethod > 0){
+                    parent1 = this.tournmentSelection(usedPopulation);
+                }
+                Chromosome child = parent1.clone();
+                if (this._rnd.nextDouble() < this._crossover) {
+                    Chromosome parent2 = this.rankSelection(usedPopulation);
+                    if(this._selectionMethod > 0){
+                        parent2 = this.tournmentSelection(usedPopulation);
+                    }
+                    child = parent1.crossover(parent2);
+                }
+                if (this._rnd.nextDouble() < this._mutation) {
+                    child = child.mutate();
+                }
+                newPopulation[i] = child;
+            }
+            for(int i=0; i<this._elitism; i++){
+                if(i < twoPop[0].length) {
+                    newPopulation[newPopulation.length - 1 - i] = twoPop[0][i];
+                }
+                else {
+                    newPopulation[newPopulation.length - 1 - i] = twoPop[1][i];
+                }
+            }
+            currentPopulation = newPopulation;
+        }
+        this.calculateFitness(currentPopulation);
+
+        try {
+            File popFile = new File(popFolder + "/final.txt");
+            FileWriter fWriter = new FileWriter(popFile, true);
+            PrintWriter pWriter = new PrintWriter(fWriter);
+
+            pWriter.println("Max Fitness Index: " + getMaxFitnessIndex(currentPopulation) + ", " + getMaxFitness(currentPopulation));
+            pWriter.println("Average Constraint: " + averageConstraint(currentPopulation));
+            pWriter.println("AverageFitness: " + averageFitness(currentPopulation));
+
+
+            for (int i = 0; i < currentPopulation.length; i++) {
+                System.out.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                System.out.println(currentPopulation[i]);
+
+                pWriter.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                pWriter.println(currentPopulation[i]);
+                pWriter.println(" ");
+
+            }
+            pWriter.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return currentPopulation;
     }
 }
