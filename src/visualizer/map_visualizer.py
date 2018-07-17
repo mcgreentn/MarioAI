@@ -1,6 +1,3 @@
-import os
-import sys
-import numpy as np
 from definitions import ROOT_DIR
 from PIL import Image
 

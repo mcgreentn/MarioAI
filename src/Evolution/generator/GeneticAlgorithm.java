@@ -174,6 +174,12 @@ public class GeneticAlgorithm {
             e.printStackTrace();
         }
 
+
+        try{
+            PrintWriter bestFitFile = new File("best_fitness.txt");
+
+        }
+
 	    Chromosome[][] twoPop = this.getFeasibleInfeasible(currentPopulation);
 	    Arrays.sort(twoPop[0]);
 	    Arrays.sort(twoPop[1]);
@@ -337,5 +343,33 @@ public class GeneticAlgorithm {
             e.printStackTrace();
         }
         return currentPopulation;
+    }
+
+    public void saveGenerationData(int genNumber, Chromosome[] generation) {
+        try {
+            Directory dir = new File(popFolder + "/" + (j+1)).mkdirs();
+            PrintWriter popInfoFile = new PrintWriter(popFolder + "/evolution_data.txt", true);
+//            File popFile = new File(popFolder + "/" + (j + 1) + ".txt");
+
+            popInfoFile.println("Max Fitness Index: " + getMaxFitnessIndex(generation) + ", " + getMaxFitness(generation));
+            popInfoFile.println("Average Constraint: " + averageConstraint(generation));
+            popInfoFile.println("AverageFitness: " + averageFitness(generation));
+
+
+            for (int i = 0; i < currentPopulation.length; i++) {
+                PrintWriter pWriter = new PrintWriter(getAbsolutePath() + "/gen_" + (i+1) + ".txt");
+
+                System.out.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                System.out.println(currentPopulation[i]);
+
+                popInfoFile.println("index " + i + " constraints " + currentPopulation[i].getConstraints() + " fitness " + currentPopulation[i].getFitness());
+                pWriter.println(currentPopulation[i]);
+                pWriter.close();
+
+            }
+            popInfoFile.close()
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
