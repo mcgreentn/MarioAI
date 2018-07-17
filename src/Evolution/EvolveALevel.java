@@ -20,8 +20,12 @@ public class EvolveALevel {
 
 //    String popFolder = "LJC/";
 //    String popFolder = "EBC/";
-    String popFolder = "NRC/";
+//    String popFolder = "NRC/";
+
+//    String popFolder = "LJ_10/";
+    String popFolder = "EB_10/";
     GeneticAlgorithm ga;
+
 
 //    public void init() {
 //        perfect = = new AStarAgent();
@@ -62,6 +66,7 @@ public class EvolveALevel {
     }
 
     public void init() {
+
         ga = new GeneticAlgorithm(library, 100, 18, 0, 0.9, 0.3, 1);
     }
     public void evolve() {

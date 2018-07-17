@@ -60,9 +60,9 @@ public class RunGivenLevel {
 
         options = optionSetup(options);
 //        agentSetup(new AStarAgent(), new LimitedJumpAgent());
-//        agentSetup(new AStarAgent(), new EnemyBlindAgent());
+        agentSetup(new AStarAgent(), new EnemyBlindAgent());
 //        agentSetup(new AStarAgent(), new NoBButtonAgent());
-        agentSetup(new HumanKeyboardAgent(), new HumanKeyboardAgent());
+//        agentSetup(new HumanKeyboardAgent(), new HumanKeyboardAgent());
 //        this.runLevel(options);
 //        Task task = new ProgressTask(options);
 
@@ -105,14 +105,14 @@ public class RunGivenLevel {
 
             options = new CmdLineOptions(new String[0]);
             // basic options stuff
-//            options.setMaxFPS(false);
-            options.setVisualization(true);
+            options.setMaxFPS(true);
+            options.setVisualization(false);
             options.setNumberOfTrials(1);
-            options.setMaxFPS(false);
+//            options.setMaxFPS(false);
             ToolsConfigurator.CreateMarioComponentFrame(
                     options);
             options.setMarioMode(0);
-            options.setTimeLimit(100);
+            options.setTimeLimit(10);
 
         }
         // flag that this is going to work differently. We are going to insert our own level here
